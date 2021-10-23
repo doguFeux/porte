@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="c-wrapper">
+
+    <section class="comp-section-01">
+
+        <div id="comp-screen-01">
+            <div class="c-container-01">
+                <picture>
+                    <source media="(max-width: 465px)" srcset="/Content/Visuals/app-icon.png" />
+                    <source media="(min-width: 466px)" srcset="/Content/Visuals/app-icon.png" />
+                    <img src="/Content/Visuals/app-icon.png" alt="" />
+                </picture>
+            </div>
+            <a href="#" onclick="nextStep({ ev: event, sender: this });" class="c-container-02">
+                START
+            </a>
+        </div>
+        <form action="#" id="comp-screen-02" style="display:none;">
+            <div class="c-container-01">
+                <picture>
+                    <source media="(max-width: 465px)" srcset="/Content/Visuals/app-icon.png" />
+                    <source media="(min-width: 466px)" srcset="/Content/Visuals/app-icon.png" />
+                    <img src="/Content/Visuals/app-icon.png" alt="" />
+                </picture>
+            </div>
+            <div class="c-container-02">
+                <div class="form-group-01">
+                    <input type="text" id="email" name="email" class="c-item-01" placeholder="Email" required />
+                </div>
+                <div class="form-group-01">
+                    <input type="password" id="password" name="password" class="c-item-01" placeholder="Password" required />
+                </div>
+            </div>
+            <a href="#" onclick="signIn({ ev: event, sender: this })" class="c-container-03">
+                Sing in
+            </a>
+            <div class="c-container-04">
+                <div class="c-item-01">Not Registered yet?</div>
+                <a href="#" class="c-item-02">Sign up</a>
+            </div>
+        </form>
+    </section>
+
+</div>
+<script>
+    function nextStep(arg) {
+        var sender = arg.sender;
+        var ev = arg.ev;
+        var compScreenOneEl = document.getElementById("comp-screen-01");
+        var compScreenTwoEl = document.getElementById("comp-screen-02");
+
+        ev.preventDefault();
+        compScreenOneEl.classList.add("off");
+        compScreenTwoEl.removeAttribute("style");
+
+    }
+
+    function signIn(arg) {
+        var sender = arg.sender;
+        var ev = arg.ev;
+        var isRegisteredUser = false;
+
+        ev.preventDefault();
+
+        if ($("#comp-screen-02").valid()) {
+
+            $.ajax({
+                url: "https://jsonplaceholder.typicode.com/users",
+                type: "Get",
+                success: function (datas) {
+                    for (var i = 0; i < datas.length; i++) {
+
+                        var data = datas[i];
+
+                        if (data.email == $("#email").val()) {
+                            isRegisteredUser = true;
+                            break;
+                        }
+                    }
+
+                    if (isRegisteredUser) {
+                        alert("Success");
+                    } else {
+                        alert("Error");
+                    }
+                }
+            });
+
+        }
+        else {
+            return false;
+        }
+    }
+</script>
+
